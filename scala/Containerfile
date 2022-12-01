@@ -1,0 +1,18 @@
+FROM docker.io/ubuntu:22.04
+
+SHELL [ "/bin/bash", "-c" ] #this doesn't seem to work
+
+RUN bash -c 'apt-get update && apt-get install -y zip unzip curl && \
+    curl -s "https://get.sdkman.io" | bash && \
+    source "$HOME/.sdkman/bin/sdkman-init.sh" && \
+    sdk install scala 2.13.10 && \
+    JAVA_VERSION=$(sdk list java | grep -oE "17\.[0-9]+\.[0-9]+-zulu") && \
+    sdk install java "${JAVA_VERSION}" && \
+    sdk install sbt 1.8.0'
+
+WORKDIR /src
+COPY . /src
+
+RUN bash -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && \
+    sbt test'
+

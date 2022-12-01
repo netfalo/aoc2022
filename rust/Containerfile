@@ -1,0 +1,7 @@
+FROM docker.io/rust
+
+WORKDIR /src
+COPY . /src
+COPY Day1.txt /puzzles/
+
+RUN cargo test
