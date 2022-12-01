@@ -1,0 +1,10 @@
+#+TITLE: Advent of Code 2022
+
+Inspired by https://github.com/edsinkevic/advent-of-code-2022 this a multilang repository for this year's aoc.
+
+* How to build
+
+Replace <lang> with on of the folders
+#+BEGIN_SRC sh
+  buildah build --layers -f <lang>/Containerfile <lang>
+#+END_SRC
