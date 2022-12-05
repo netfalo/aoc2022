@@ -1,17 +1,27 @@
 FROM docker.io/ubuntu:22.04
 
-SHELL [ "/bin/bash", "-c" ] #this doesn't seem to work
+#SHELL [ "/bin/bash", "-c" ] this is not OCI compliant
 
-RUN bash -c 'apt-get update && apt-get install -y zip unzip curl && \
-    curl -s "https://get.sdkman.io" | bash && \
+RUN apt-get update && apt-get install -y zip unzip curl && \
+    adduser scala
+USER scala
+
+RUN bash -c 'curl -s "https://get.sdkman.io" | bash && \
     source "$HOME/.sdkman/bin/sdkman-init.sh" && \
     sdk install scala 2.13.10 && \
     JAVA_VERSION=$(sdk list java | grep -oE "17\.[0-9]+\.[0-9]+-zulu") && \
     sdk install java "${JAVA_VERSION}" && \
     sdk install sbt 1.8.0'
 
-WORKDIR /src
-COPY . /src
+WORKDIR /home/scala/src
+
+COPY --chown=scala build.sbt .
+COPY --chown=scala project project
+
+RUN bash -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && \
+    sbt compile'
+
+COPY --chown=scala src src
 
 RUN bash -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && \
     sbt test'
