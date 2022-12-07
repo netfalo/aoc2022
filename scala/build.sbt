@@ -8,3 +8,5 @@ lazy val root = (project in file(".")).
   )
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % Test
+
+testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
