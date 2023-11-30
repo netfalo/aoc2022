@@ -1,5 +1,4 @@
 import scala.annotation.tailrec
-import scala.collection.immutable.TreeSet
 
 object Day12 extends Problem[Int, Int] {
   override def solve(puzzle: String): Solution[Int, Int] = {
